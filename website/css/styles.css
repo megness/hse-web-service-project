@@ -1,0 +1,38 @@
+#footer {
+	clear:both;
+	text-align:center;
+	font-size:75%;
+	font-family:monospace;
+	border-top:solid 1px #000;
+	background:#8fd;
+}
+
+ul#menu {
+	display:table;
+	width:100%;
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	background:#ade;
+	height:30px;
+	background-image:-webkit-linear-gradient(bottom, #fff 0%, #0ae 100%);
+}
+
+ul#menu li, a {
+	display:table-cell;
+	font-weight:bold;
+	text-decoration:none;
+	color:black;
+	height:100%;
+}
+
+ul#menu a {
+	display:block;
+	text-align:center;
+	padding:10px 10px;
+	border:1px solid black;
+}
+
+ul#menu a:hover {
+	background-image:-webkit-linear-gradient(bottom, #fff 0%, #ff0 100%);
+}
