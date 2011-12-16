@@ -1,4 +1,74 @@
 ---
 
+The web site code will be located at /website
 The warehouse code will be located at /warehouse
 The suppliers service will be located at /suppliers
+The logger code will be at /logger
+
+The site queries warehouse(s) for goods.
+If there are no goods in a warehouse, it queries the products from one of Suppliers.
+
+Site, Warehouse and Suppliers all push logs to the logger service
+
+--------                -------------                 -------------
+|      |                |           |                 |           |
+| Site |  <--- 1:N ---> | Warehouse |  <--- N:M --->  | Supplier  |
+|      |                |           |                 |           |
+|______|                |___________|                 |___________|
+    |                         |                             |
+    |                         |                             |
+    |                         |                             |
+    |                         |                             |
+    |                   -------------                       |
+    |                   |           |                       |
+    |                   |           |                       |
+    |___________________| Logger    |_______________________|
+                        |           |
+                        |___________|
+
+------------------------------------------------------------------------------
+The Warehouse interface
+------------------------------------------------------------------------------
+The public product class (in java... we'll see how it turns in SOAP)
+class Product {
+  String Name;
+  double Price;
+  int AvailableQuantity;
+}
+
+int getProductTypesCount() //Gets the number of all available product types
+Product []getAllProducts() //Gets all available products
+Product []getProductRange(int first, int last)
+//Gets the range of products, because the list of all products may be too large
+
+Structure for response
+
+class ProductBuyResponse {
+  bool Success;
+  double TotalCost;
+};
+ProductBuyResponse buyProduct(String Name, int Count)
+
+------------------------------------------------------------------------------
+The Supplier interface
+------------------------------------------------------------------------------
+Suppliers are identical to Warehouses, but the website does not communicate with
+them directly. Instead, warehouses query them for products.
+
+------------------------------------------------------------------------------
+The Logger interface
+------------------------------------------------------------------------------
+void Log(String ServiceName, String Tag, int severity, String Message);
+String[] getMessages(String ServiceName, int minSeverity, int maxSeverity);
+String[] getMessages(String ServiceName, String Tag, int minSeverity, int maxSeverity);
+
+Writes a message to the system log
+severity is an integer specifying message level.
+0 => DEBUG
+1 => INFO
+2 => WARNING
+3 => ERROR
+4 => CRITICAL
+
+ServiceName is the name of the service (i.e., "WebShop@10.11.12.13")
+Tag is the name of the tag (i.e., "DBManager", "PageGenerator") etc
